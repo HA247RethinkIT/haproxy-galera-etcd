@@ -37,7 +37,7 @@ class Etcd(APIClient):
         self.BASE_URL = base_url + '/v2'
         super(Etcd, self).__init__()
 
-    def fetch_services(self, key='services'):
+    def fetch_services(self, key='pxc-cluster'):
         services = []
         try:
             req = self.call('/keys/' + key, sorted='true')
@@ -59,12 +59,11 @@ class Etcd(APIClient):
             nodes = req['node']['nodes']
             counter = 0
             for node in nodes:
-                values = node['value'].split(':')
+                hostname = self.call('/keys' + node['key'] + '/hostname', sorted='true')
+                ipaddr = self.call('/keys' + node['key'] + '/ipaddr', sorted='true')
                 instance = {
-                    'key': node['key'],
-                    'name': values[0] + ':' + values[1],
-                    'host': values[0],
-                    'port': values[1]
+                    'hostname': hostname['node']['value'],
+                    'ipaddr': ipaddr['node']['value']
                 }
                 instances.append(instance)
                 counter += 1

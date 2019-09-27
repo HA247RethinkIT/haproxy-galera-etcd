@@ -8,3 +8,8 @@ build/
 .tox/
 .coverage
 default.etcd/
+
+bin/
+include/
+lib/python2.7/
+local/
