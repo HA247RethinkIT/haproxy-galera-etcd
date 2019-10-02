@@ -1,3 +1,8 @@
+defaults
+  timeout connect 10000ms
+  timeout client 120000ms
+  timeout server 120000ms
+
 listen checkit_cluster1
   bind *:3306
   mode tcp

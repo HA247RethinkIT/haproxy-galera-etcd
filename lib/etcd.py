@@ -5,32 +5,44 @@ from apiclient import APIClient
 class Etcd(APIClient):
     """
         Get services from etcd
-        Expects them at /keys/services, for each service, the value expected is (HOST|IP):PORT
-        e.g. for a service called api:
-                /keys/services/api could return
-                {
-                  "action": "get",
-                  "node": {
-                    "key": "/services/api",
-                    "dir": true,
-                    "nodes": [
-                      {
-                        "key": "/services/api/172.10.0.1",
-                        "value": "172.10.0.1:8000",
-                        "modifiedIndex": 4,
-                        "createdIndex": 4
-                      },
-                      {
-                        "key": "/services/api/172.10.0.2",
-                        "value": "172.10.0.1:8000",
-                        "modifiedIndex": 5,
-                        "createdIndex": 5
-                      }
-                    ],
-                    "modifiedIndex": 4,
-                    "createdIndex": 4
-                  }
-                }
+        Expects them at /keys/pxc-cluster/, for each service, the value expected is (HOST|IP):PORT
+        e.g. for a galera cluster with the name cluster1:
+        $ curl http://{IP:PORT}/v2/keys/pxc-cluster/cluster1/
+        {
+          "action": "get",
+          "node": {
+            "key": "/pxc-cluster/cluster1",
+            "dir": true,
+            "nodes": [
+              {
+                "key": "/pxc-cluster/cluster1/10.0.4.32",
+                "dir": true,
+                "expiration": "2019-10-01T09:02:52.805000625Z",
+                "ttl": 26,
+                "modifiedIndex": 8781875,
+                "createdIndex": 8781875
+              },
+              {
+                "key": "/pxc-cluster/cluster1/10.0.4.44",
+                "dir": true,
+                "expiration": "2019-10-01T09:02:52.954038826Z",
+                "ttl": 26,
+                "modifiedIndex": 8781907,
+                "createdIndex": 8781907
+              },
+              {
+                "key": "/pxc-cluster/cluster1/10.0.57.47",
+                "dir": true,
+                "expiration": "2019-10-01T09:02:55.784384213Z",
+                "ttl": 29,
+                "modifiedIndex": 9029896,
+                "createdIndex": 9029896
+              }
+            ],
+            "modifiedIndex": 102238,
+            "createdIndex": 102238
+          }
+        }
     """
 
     def __init__(self, base_url):
@@ -49,12 +61,13 @@ class Etcd(APIClient):
                 }
                 services.append(service)
         except:
-            print 'Unexpected error:', sys.exc_info()[0]
+            print 'Unexpected error in fetch_services():', sys.exc_info()[0]
         return services
 
     def fetch_instances_of(self, service):
         instances = []
         try:
+            print(service)
             req = self.call(service['path'], sorted='true')
             nodes = req['node']['nodes']
             counter = 0
@@ -68,6 +81,6 @@ class Etcd(APIClient):
                 instances.append(instance)
                 counter += 1
         except:
-            print 'Unexpected error:', sys.exc_info()[0]
+            print 'Unexpected error in fetch_instances_of():', sys.exc_info()[0]
         
         return instances

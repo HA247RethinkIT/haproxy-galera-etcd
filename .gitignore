@@ -13,3 +13,4 @@ bin/
 include/
 lib/python2.7/
 local/
+.idea/

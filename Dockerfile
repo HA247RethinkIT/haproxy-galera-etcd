@@ -1,14 +1,13 @@
-FROM python:3.6.5-slim
+FROM python:2.7
 
-# set the working directory in the container to /app
+RUN apt-get update
+RUN apt-get install -y haproxy
+
 WORKDIR /app
-
-# add the current directory to the container as /app
 ADD . /app
 
 # execute everyone's favorite pip command, pip install -r
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
+RUN pip install .
 
-# Update software and add dnsutils for network debugging
-RUN apt-get update
-RUN apt-get install dnsutils -y
+ENTRYPOINT ['start.sh']
