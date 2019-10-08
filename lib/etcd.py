@@ -67,7 +67,6 @@ class Etcd(APIClient):
     def fetch_instances_of(self, service):
         instances = []
         try:
-            print(service)
             req = self.call(service['path'], sorted='true')
             nodes = req['node']['nodes']
             counter = 0

@@ -3,9 +3,9 @@ defaults
   timeout client 120000ms
   timeout server 120000ms
 
-listen checkit_cluster1
+listen galera
   bind *:3306
   mode tcp
-  % for instance in instances['checkit_cluster1']:
+  % for instance in instances['galera']:
     server ${instance['hostname']} ${instance['ipaddr']}:3306 check maxconn 100
   % endfor
