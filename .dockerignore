@@ -1,0 +1,4 @@
+venv
+tests
+develop-env
+docker-compose.yaml
