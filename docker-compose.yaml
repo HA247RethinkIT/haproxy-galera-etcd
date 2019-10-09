@@ -1,0 +1,7 @@
+version: "3"
+services:
+  haproxy-galera-etcd:
+    build: .
+    environment:
+      - CLIENT_URL=http://swarm1.internal.ha247.co.uk:2379/
+      - CLUSTER_NAME=checkit_cluster1

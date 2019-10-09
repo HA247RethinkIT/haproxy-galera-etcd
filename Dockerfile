@@ -10,4 +10,4 @@ ADD . /app
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
 RUN pip install .
 
-ENTRYPOINT ['/usr/local/bin/haproxy-etcd']
+CMD ["/usr/local/bin/haproxy-etcd"]
