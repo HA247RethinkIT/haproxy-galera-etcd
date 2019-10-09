@@ -4,21 +4,14 @@ Simple tool forked from (https://github.com/aksalj/haproxy-etcd) to generate a h
 cluster based on availability info. from `etcd` and gracefully reload haproxy. The code comes with a Dockerfile
 and a Docker Image available on the Docker Hub
 
-### Installation
-
-Simply run:
-
-    $ pip install .
-
-
-### Usage
-
-To use it:
-
-    $ haproxy-etcd --help
-
-**Important**: Services are expected to be registered at `/keys/pxc-cluster`; 
-For the cluster instance, the expected value is formatted as `[HOST|IP]:PORT`
+## To use in docker stack or docker compose
+```yaml
+  haproxy:
+    image: ha247/haproxy-galera-etcd
+    environment:
+      CLIENT_URL: http://etcd1:2379
+      CLUSTER_NAME: cluster1
+```
 
 This is designed to be used for the default format for percona galera clusters as shown on their Docker Hub:
 https://hub.docker.com/r/percona/percona-xtradb-cluster/
